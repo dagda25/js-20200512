@@ -5,5 +5,11 @@
  * @returns {string[]}
  */
 export function sortStrings(arr, param = 'asc') {
-
+    return arr.sort((a, b) => {
+        if (param === 'asc') {
+            return a.localeCompare(b, 'kf', { caseFirst: 'upper' });
+        } else if (param === 'desc') {
+            return -(a.localeCompare(b, 'kf', { caseFirst: 'upper' }));   
+        }
+    });
 }
