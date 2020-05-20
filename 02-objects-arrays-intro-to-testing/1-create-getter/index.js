@@ -5,4 +5,14 @@
  */
 export function createGetter(path) {
 
+    return function getter(obj) {
+        let properties = path.split('.');
+      
+        return properties.reduce(function(object, property) {
+
+            if (object === undefined) return undefined;
+            return object[property];
+                
+        }, obj);
+  }
 }
