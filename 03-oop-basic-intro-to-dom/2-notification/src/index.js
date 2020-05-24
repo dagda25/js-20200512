@@ -1,19 +1,20 @@
 export default class NotificationMessage {
     element; 
 
-    constructor(message, options) {
+    constructor(message, { duration = 2000, type = 'success' } = {}) {
         this.message = message;
-        this.options = options;
+        this.duration = duration;
+        this.type = type;
 
         this.render();
     }
   
     get template() {
         return `
-            <div class="notification ${this.options.type}" style="--value:20s">
+            <div class="notification ${this.type}" style="--value:${this.duration / 1000}s">
                 <div class="timer"></div>
                 <div class="inner-wrapper">
-                <div class="notification-header">${this.options.type}</div>
+                <div class="notification-header">${this.type}</div>
                 <div class="notification-body">
                     ${this.message}
                 </div>
@@ -30,24 +31,32 @@ export default class NotificationMessage {
       this.element = element.firstElementChild;
     }
 
-    show() {
+    show(parent) {
       const body = document.querySelector('body');
       const notification = body.querySelector('.notification');
 
-      if (notification) {
+      if (notification) { 
           notification.remove();
       }
 
-      body.append(this.element);
+      if (parent) {
+        parent.append(this.element);
+      } else {
+        body.append(this.element);
+      }
 
-      if (this.options.duration){
+      if (this.duration){
         const context = this;
-        setTimeout(() => context.remove(), this.options.duration);
+        setTimeout(() => context.remove(), this.duration);
       }
     }
   
     remove() {
       this.element.remove();
+    }
+
+    destroy() {
+      this.remove();
     }
   
 }
