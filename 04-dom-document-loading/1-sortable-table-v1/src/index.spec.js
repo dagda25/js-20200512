@@ -86,7 +86,6 @@ describe('dom-document-loading/sortable-table-v1', () => {
     sortableTable.sort(field, 'asc');
 
     const cellIndex = header.findIndex(obj => obj.id === field);
-    console.log(sortableTable.subElements);
     const { body } = sortableTable.subElements;
     const firstRow = body.firstElementChild;
     const lastRow = body.lastElementChild;

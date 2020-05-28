@@ -2,6 +2,10 @@ export default class SortableTable {
     constructor(header, { data }) {
         this.header = header;
         this.data = data;
+        this.subElements = {};
+        this.subElements.body = document.createElement('div');
+        this.subElements.header = document.createElement('div');
+        this.getSubElements();
         this.render(this.data);
 
     }
@@ -13,8 +17,8 @@ export default class SortableTable {
             <div class="sortable-table__cell" data-name=${item.id} data-sortable=${item.sortable} data-order=${this.sortStatus.value === item.id ? this.sortStatus.order : ""}>
                 <span>${item.title}</span>
                 <span class="sortable-table__sort-arrow">
-                <span class="sort-arrow"></span>
-              </span>
+                    <span class="sort-arrow"></span>
+                </span>
             </div>
             `;
         })
@@ -54,6 +58,11 @@ export default class SortableTable {
 
     }
 
+    getSubElements() {
+        this.subElements.body.innerHTML = this.getTableBody(this.header, this.data);
+        this.subElements.header.innerHTML = this.getTableHeader(this.header);
+    }
+
     render(data) {
         const element = document.createElement('div');
 
@@ -83,7 +92,8 @@ export default class SortableTable {
 
         this.remove();
         this.render(sortedData);
-        this.show();
+        this.getSubElements();
+        this.show(this.root);
 
         function sortStrings(arr, param = 'asc') {
             return arr.sort((a, b) => {
@@ -106,8 +116,8 @@ export default class SortableTable {
         
     }
 
-    show() {
-        this.root ? this.root.append(this.element) : document.body.append(this.element);
+    show(parent) {
+        parent ? parent.append(this.element) : document.body.append(this.element);
     }
 
     remove() {
@@ -121,4 +131,3 @@ export default class SortableTable {
     root = document.getElementById('root');
     sortStatus = {value: "", order: ""};
 }
-
