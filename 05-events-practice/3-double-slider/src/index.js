@@ -11,10 +11,10 @@ export default class DoubleSlider {
     onDrag = (event) => {
         document.addEventListener('pointerup', (event) => {
             document.removeEventListener('pointermove', this.onDrag);
-            event.target.dispatchEvent(new CustomEvent('range-select', {
-                detail: this.rangeValue, 
+            this.element.dispatchEvent(new CustomEvent('range-select', {
+                detail: { from: this.rangeValue.min, to: this.rangeValue.max }, 
                 bubbles: true 
-            }))
+            }));
         });
 
         let left = event.clientX - this.draggable.closest('.range-slider__inner').getBoundingClientRect().left;
@@ -90,14 +90,14 @@ export default class DoubleSlider {
 
     getTemplate(min, max, from, to) {
         return `<div class="range-slider">
-        <span data-element="from">${this.formatValue(from)}</span>
-        <div class="range-slider__inner">
-          <span data-element="progress" class="range-slider__progress" style="left:${(from - min) / (max-min) * 100}%; right:${100 - (to- min) / (max-min) * 100}%"></span>
-          <span data-element="thumbLeft" class="range-slider__thumb-left" style="left:${(from - min) / (max-min) * 100}%"></span>
-          <span data-element="thumbRight" class="range-slider__thumb-right" style="right:${100 - (to - min) / (max-min) * 100}%"></span>
-        </div>
-        <span data-element="to">${this.formatValue(to)}</span>
-      </div>`;
+                    <span data-element="from">${this.formatValue(from)}</span>
+                    <div class="range-slider__inner">
+                    <span data-element="progress" class="range-slider__progress" style="left:${(from - min) / (max-min) * 100}%; right:${100 - (to- min) / (max-min) * 100}%"></span>
+                    <span data-element="thumbLeft" class="range-slider__thumb-left" style="left:${(from - min) / (max-min) * 100}%"></span>
+                    <span data-element="thumbRight" class="range-slider__thumb-right" style="right:${100 - (to - min) / (max-min) * 100}%"></span>
+                    </div>
+                    <span data-element="to">${this.formatValue(to)}</span>
+                </div>`;
     }
   
     render() {
