@@ -1,22 +1,26 @@
 class Tooltip {
-    element; // HTMLElement;
+    element;
     elementWithTooltip;
 
     onEnter = (event) => {
-        console.log(event.target);
         if (event.target.dataset.tooltip != undefined) { 
             this.elementWithTooltip = event.target;
-            event.target.addEventListener('pointermove', this.onMove)
+            this.element.textContent = `${event.target.dataset.tooltip}`;
+
+            event.target.addEventListener('pointermove', this.onMove);
         }
     }
 
     onMove = (event) => {
-        this.elementWithTooltip.append(this.element);
-        this.elementWithTooltip.addEventListener('pointerout', this.onLeave)
+        this.element.classList.remove('hide');
+        this.element.style.left = event.clientX + 5 + 'px';
+        this.element.style.top = event.clientY + 5 + 'px';
+
+        this.elementWithTooltip.addEventListener('pointerout', this.onLeave);
     }
 
     onLeave = (event) => {
-        this.element.remove();
+        this.element.classList.add('hide');
         this.elementWithTooltip.removeEventListener('pointerout', this.onLeave);
         this.elementWithTooltip.removeEventListener('pointermove', this.onMove)
     }
@@ -26,7 +30,7 @@ class Tooltip {
     }
 
     getTemplate() {
-        return `<div class="tooltip">This is tooltip</div>`;
+        return `<div class="tooltip" style="left: -999px"></div>`;
     }
   
     render() {
@@ -35,6 +39,7 @@ class Tooltip {
         element.innerHTML = this.getTemplate();
     
         this.element = element.firstElementChild;
+        document.body.append(this.element);
     }
 
     initialize() {
