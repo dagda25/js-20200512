@@ -32,8 +32,7 @@ export default class ColumnChart {
     const route = new URL(this.url, this.domain);//`${url}${this.range.from}${this.range.to}`;
     route.searchParams.set('from', this.range.from);
     route.searchParams.set('to', this.range.to);
-    const data = await fetch(route);
-    const result = await data.json();
+    const result = await fetchJson(route);
     this.data = result;
     return result;
   }
@@ -111,7 +110,6 @@ export default class ColumnChart {
     this.range.from = from;
     this.range.to = to;
     await this.getData(this.url);
-    console.log(this.data);
     this.element.classList.remove('column-chart_loading');
     this.subElements.header.textContent = this.getTotalValue();
     this.subElements.body.innerHTML = this.getColumnBody();
