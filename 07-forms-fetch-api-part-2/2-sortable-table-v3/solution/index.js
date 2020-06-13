@@ -73,6 +73,7 @@ export default class SortableTable {
 
     this.headersConfig = headersConfig;
     this.url = new URL(url, BACKEND_URL);
+    console.log(url);
     this.sorted = sorted;
     this.isSortLocally = isSortLocally;
     this.step = step;
