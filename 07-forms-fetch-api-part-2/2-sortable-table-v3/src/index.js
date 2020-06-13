@@ -67,12 +67,12 @@ export default class SortableTable {
     async update() {
         await this.loadData(this.id, this.order, this.start, this.end);
         console.log(this.data.length);
-        /*if (this.data.length) {
+        if (this.data.length) {
             this.element.classList.remove('sortable-table_empty');
         } else {
             this.element.classList.add('sortable-table_empty');
             return; 
-        }*/
+        }
         this.subElements.body.innerHTML = this.getTableRows(this.data);
     }
 
@@ -121,6 +121,7 @@ export default class SortableTable {
           template
         };
       });
+      
       return cells.map(({id, template}) => {
         return template
           ? template(item[id])
