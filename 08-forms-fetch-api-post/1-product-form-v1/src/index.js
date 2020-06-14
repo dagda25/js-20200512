@@ -16,33 +16,35 @@ export default class ProductForm {
 
     makeRequest = async (event) => {
         event.preventDefault();
-       /* const fd = new FormData(this.subElements.productForm);
-        const object = {};
-fd.forEach((value, key) => {object[key] = value});
-const json = JSON.stringify(object);
-        console.log(json);*/
+
         if (this.productId) {
+            const formData = new FormData(this.subElements.productForm);
+            formData.append('id', this.productId);
             const response = await fetchJson(this.url, {
                 method: 'PATCH',
                 headers: {'Content-type': 'application/json'},
-                body: new FormData(this.subElements.productForm)
+                body: formData
             });
             const result = await response.json();
-            console.log('patch', result);
+            this.element.dispatchEvent(new CustomEvent('product-updated', {
+                detail: { result }, 
+                bubbles: true 
+            }));
         } else {
             const response = await fetchJson(this.url, {
                 method: 'PUT',
                 body: new FormData(this.subElements.ProductForm)
             });
             const result = await response.json();
-            console.log('put', result);
+            this.element.dispatchEvent(new CustomEvent('product-saved', {
+                detail: { result }, 
+                bubbles: true 
+            }));
         }
     }
   
     onUpload = async (event) => {
       let uploader = new ImageUploader();
-  
-      alert('Загружаем...');
   
       let result;
   
@@ -52,9 +54,7 @@ const json = JSON.stringify(object);
       } catch(err) {
         alert('Ошибка загрузки изображения');
         console.error(err);
-      } finally {
-        alert('Готово!')
-      }
+      } 
 
       this.productData.images.push({
         url: result.data.link,

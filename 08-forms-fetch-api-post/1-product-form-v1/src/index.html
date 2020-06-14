@@ -43,7 +43,7 @@
   };
 
   const productId = '101-planset-lenovo-yt3-x90l-64-gb-3g-lte-cernyj';
-  const productForm = new ProductForm(productData);
+  const productForm = new ProductForm(productData, productId);
 
   const renderForm = async () => {
     await productForm.render();
